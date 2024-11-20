@@ -8,9 +8,10 @@ public class MazeRunner : IFormattable
     public Grid Maze { get; }
     private String? _output;
 
-    public MazeRunner(Grid grid, IAlgorithm algorithm)
+    public MazeRunner(Grid grid, IMazeAlgorithm mazeAlgorithm)
     {
-        Maze = algorithm.Traverse(grid);
+        // We clone the grid to not change the original
+        Maze = mazeAlgorithm.Traverse(grid.Clone());
         _output = grid.ToString();
     }
 

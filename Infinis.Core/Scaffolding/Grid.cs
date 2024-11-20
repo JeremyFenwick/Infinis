@@ -78,6 +78,16 @@ public class Grid : IEnumerable<Cell>, IFormattable
         }        
     }
 
+    public Cell[] GetColumn(int col)
+    {
+        return Enumerable.Range(0, Cells.GetLength(0)).Select(i => Cells[i, col]).ToArray();
+    }
+    
+    public Cell[] GetRow(int row)
+    {
+        return Enumerable.Range(0, Cells.GetLength(1)).Select(i => Cells[row, i]).ToArray();
+    }
+
     // https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/interfaces/explicit-interface-implementation
     IEnumerator IEnumerable.GetEnumerator()
     {

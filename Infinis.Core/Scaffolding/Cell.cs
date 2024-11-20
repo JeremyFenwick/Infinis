@@ -49,8 +49,14 @@ public class Cell : IFormattable
         return _links.Contains(cell);
     }
 
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    public override string ToString()
     {
         return $"Row: {_row}: Col: {_column} Links: {_links.Count}";    
+
+    }
+    
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return ToString();
     }
 }
