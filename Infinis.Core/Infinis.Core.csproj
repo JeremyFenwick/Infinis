@@ -8,4 +8,8 @@
         <RootNamespace>Infinis</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Algorithms\Interfaces\" />
+    </ItemGroup>
+
 </Project>

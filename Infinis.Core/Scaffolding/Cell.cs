@@ -1,6 +1,6 @@
 ﻿namespace Infinis.Scaffolding;
 
-public class Cell
+public class Cell : IFormattable 
 {
     private readonly int _row;
     private readonly int _column;
@@ -22,13 +22,11 @@ public class Cell
         return (_row, _column);
     }
 
-    public void Link(Cell cell, bool bidirectional = true)
+    public void Link(Cell? cell, bool bidirectional = true)
     {
+        if (cell == null) return;
         _links.Add(cell);
-        if (bidirectional)
-        {
-            cell.Link(this);
-        }
+        if (bidirectional)  cell.Link(this, false);
     }
 
     public void UnLink(Cell cell, bool bidirectional = true)
@@ -36,7 +34,7 @@ public class Cell
         _links.Remove(cell);
         if (bidirectional)
         {
-            cell.UnLink(this);
+            cell.UnLink(this, false);
         }
     }
 
@@ -45,13 +43,14 @@ public class Cell
         return new List<Cell>();
     }
 
-    public bool IsLinked(Cell cell)
+    public bool IsLinked(Cell? cell)
     {
+        if (cell == null) return false;
         return _links.Contains(cell);
     }
 
-    public new String ToString()
+    public string ToString(string? format, IFormatProvider? formatProvider)
     {
-        return $"Row: {_row}: Col: {_column}";
+        return $"Row: {_row}: Col: {_column} Links: {_links.Count}";    
     }
 }

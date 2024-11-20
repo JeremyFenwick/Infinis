@@ -1,3 +1,4 @@
+using Infinis.Algorithms;
 using Infinis.Scaffolding;
 
 namespace Infinis.Tests;
@@ -11,15 +12,15 @@ public class Tests
 
     public Grid MakeMaze()
     {
-        return new Grid(10, 10);
+        return new Grid(4, 4);
     }
 
     [Test]
     public void GridDimensions()
     {
         var grid = MakeMaze();
-        Assert.That(grid.Rows(), Is.EqualTo(10));
-        Assert.That(grid.Cols(), Is.EqualTo(10));
+        Assert.That(grid.Rows(), Is.EqualTo(4));
+        Assert.That(grid.Cols(), Is.EqualTo(4));
     }
 
     [Test]
@@ -35,7 +36,23 @@ public class Tests
         var grid = MakeMaze();
         foreach (var cell in grid)
         {
-            Console.WriteLine(cell.ToString());
+            Console.WriteLine(cell);
         }
+        Assert.That(true);
+    }
+
+    [Test]
+    public void GridToString()
+    {
+        var grid = MakeMaze();
+        Console.WriteLine(grid);
+    }
+    
+    [Test]
+    public void MazeToString()
+    {
+        var grid = MakeMaze();
+        var mr = new MazeRunner(grid, new BinaryTree());
+        Console.WriteLine(mr);
     }
 }
