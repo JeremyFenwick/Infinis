@@ -40,7 +40,7 @@ public class Cell : IFormattable
 
     public IEnumerable<Cell> GetLinks()
     {
-        return new List<Cell>();
+        return this._links;
     }
 
     public bool IsLinked(Cell? cell)
@@ -51,12 +51,33 @@ public class Cell : IFormattable
 
     public override string ToString()
     {
-        return $"Row: {_row}: Col: {_column} Links: {_links.Count}";    
+        return "   ";
 
     }
     
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return ToString();
+    }
+
+    public Distances Distances()
+    {
+        var distances = new Distances(this);
+        var frontier = new List<Cell> {this};
+        while (frontier.Count > 0)
+        {
+            var newFrontier = new List<Cell>();
+            foreach (var cell in frontier)
+            {
+                foreach (var link in cell.GetLinks())
+                {
+                    if (distances.Contains(link)) continue;
+                    distances[link] = distances[cell] + 1;
+                    newFrontier.Add(link);
+                }
+            }
+            frontier = newFrontier;
+        }
+        return distances;
     }
 }

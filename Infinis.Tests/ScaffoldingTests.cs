@@ -75,8 +75,8 @@ public class Tests
     public void MazeToString()
     {
         var grid = MakeGrid();
-        var mr = new MazeRunner(grid, new BinaryTree());
-        Console.WriteLine(mr);
+        MazeGen.BinaryTree(grid);
+        Console.WriteLine(grid);
         Assert.That(true);
     }
     
@@ -94,8 +94,8 @@ public class Tests
     public void MazeToString2()
     {
         var grid = MakeGrid();
-        var mr = new MazeRunner(grid, new SideWinder());
-        Console.WriteLine(mr);
+        MazeGen.SideWinder(grid);
+        Console.WriteLine(grid);
         Assert.That(true);
     }
 
@@ -122,7 +122,19 @@ public class Tests
     public void GridToImage()
     {
         var grid = MakeGrid();
-        var mr = new MazeRunner(grid, new SideWinder());
-        mr.CreateImage(40, "C:\\Users\\jerem\\Documents\\sidewinder.jpg", Color.Bisque, Color.DarkGreen);
+        MazeGen.BinaryTree(grid);
+        grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\sidewinder.jpg", Color.Bisque, Color.DarkGreen);
+        Assert.That(true);
+    }
+
+    [Test]
+    public void DistanceGrid()
+    {
+        var grid = new DistanceGrid(5, 5);
+        MazeGen.BinaryTree(grid);
+        var start = grid[0, 0];
+        var distances = start.Distances();
+        grid.Distances = distances;
+        Console.WriteLine(grid);
     }
 }

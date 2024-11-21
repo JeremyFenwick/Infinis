@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 
 namespace Infinis.Scaffolding;
@@ -51,7 +52,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
         return row >= 0 && row < Cells.GetLength(0) && col >= 0 && col < Cells.GetLength(1);
     }
 
-    public Object? this[int row, int col] => ValidLocation(row, col) ? Cells[row, col] : null;
+    public Cell? this[int row, int col] => ValidLocation(row, col) ? Cells[row, col] : null;
 
     public Cell RandomCell()
     {
@@ -114,7 +115,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
     public override string ToString()
     {
         const string corner = "+";
-        const string body = "   ";
+        // const string body = "   ";
         
         var sb = new StringBuilder();
         sb.Append('+');
@@ -130,7 +131,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
                 var cell = Cells[row, col];
                 // East wall
                 var eastBoundary = cell.IsLinked(cell.East) ? " " : "|";
-                top += body + eastBoundary;
+                top += CellContents(cell) + eastBoundary;
                 // South wall
                 var southBoundary = cell.IsLinked(cell.South) ? "   " : "---";
                 bottom += southBoundary + corner;
@@ -143,12 +144,17 @@ public class Grid : IEnumerable<Cell>, IFormattable
         return sb.ToString();
     }
 
+    public virtual string CellContents(Cell cell)
+    {
+        return cell.ToString();
+    }
+
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return ToString();
     }
 
-    public Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth)
+    private Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth)
     {
         var width = cellSize * Cols();
         var height = cellSize * Rows();
@@ -172,5 +178,12 @@ public class Grid : IEnumerable<Cell>, IFormattable
             if (!cell.IsLinked(cell.South)) graphics.DrawLine(pen, x1, y2, x2, y2);
         }
         return bitmap;
+    }
+    
+    public void CreateImage(int cellSize, string directory, Color background, Color walls, float wallWidth = 1f, ImageFormat? format = null)
+    {
+        format ??= ImageFormat.Jpeg;
+        var bitMap = this.ToBitmap(cellSize, background, walls, wallWidth);
+        bitMap.Save(directory, format);
     }
 }
