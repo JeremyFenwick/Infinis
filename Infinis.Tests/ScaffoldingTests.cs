@@ -1,3 +1,5 @@
+using System.Drawing;
+using System.Drawing.Imaging;
 using Infinis.Algorithms;
 using Infinis.Scaffolding;
 
@@ -10,7 +12,7 @@ public class Tests
     {
     }
 
-    public Grid MakeGrid()
+    private Grid MakeGrid()
     {
         return new Grid(4, 4);
     }
@@ -113,5 +115,14 @@ public class Tests
         var col = grid.GetColumn(0);
         Assert.That(col[0].Location() == (0, 0));
         Assert.That(col[1].Location() == (1, 0));
+    }
+
+    // Visual test. Sample Output (random generation)
+    [Test]
+    public void GridToImage()
+    {
+        var grid = MakeGrid();
+        var mr = new MazeRunner(grid, new SideWinder());
+        mr.CreateImage(40, "C:\\Users\\jerem\\Documents\\sidewinder.jpg", Color.Bisque, Color.DarkGreen);
     }
 }

@@ -3,7 +3,7 @@ using Infinis.Scaffolding;
 
 namespace Infinis.Algorithms;
 
-public class BinaryTree : IMazeAlgorithm
+public class BinaryTree : IMazeGen
 {
     public Grid Traverse(Grid grid)
     {

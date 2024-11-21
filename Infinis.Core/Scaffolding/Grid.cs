@@ -1,11 +1,12 @@
 ﻿using System.Collections;
+using System.Drawing;
 using System.Text;
 
 namespace Infinis.Scaffolding;
 
 public class Grid : IEnumerable<Cell>, IFormattable
 {
-    public Cell[,] Cells { get; }
+    private Cell[,] Cells { get; }
 
     public Grid(int rows, int columns)
     {
@@ -112,6 +113,9 @@ public class Grid : IEnumerable<Cell>, IFormattable
 
     public override string ToString()
     {
+        const string corner = "+";
+        const string body = "   ";
+        
         var sb = new StringBuilder();
         sb.Append('+');
         sb.Append(string.Concat(Enumerable.Repeat("---+", Cols())));
@@ -125,12 +129,10 @@ public class Grid : IEnumerable<Cell>, IFormattable
             {
                 var cell = Cells[row, col];
                 // East wall
-                const string body = "   ";
                 var eastBoundary = cell.IsLinked(cell.East) ? " " : "|";
                 top += body + eastBoundary;
                 // South wall
                 var southBoundary = cell.IsLinked(cell.South) ? "   " : "---";
-                const string corner = "+";
                 bottom += southBoundary + corner;
             }
             sb.Append(top);
@@ -144,5 +146,31 @@ public class Grid : IEnumerable<Cell>, IFormattable
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
         return ToString();
+    }
+
+    public Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth)
+    {
+        var width = cellSize * Cols();
+        var height = cellSize * Rows();
+
+        var brush = new SolidBrush(background);
+        var pen = new Pen(walls, wallWidth);
+        
+        var bitmap = new Bitmap(width + (cellSize), height + (cellSize));
+        using var graphics = Graphics.FromImage(bitmap);
+        graphics.FillRectangle(brush, 0, 0, width + (cellSize), height + (cellSize));
+        foreach (var cell in this)
+        {
+            var (row, col) = cell.Location();
+            var x1 = col * cellSize + (cellSize / 2);
+            var x2 = (col + 1) * cellSize + (cellSize / 2);
+            var y1 = row * cellSize + (cellSize / 2);
+            var y2 = (row + 1) * cellSize + (cellSize / 2);
+            if (cell.North == null) graphics.DrawLine(pen, x1, y1, x2, y1);
+            if (cell.West == null) graphics.DrawLine(pen, x1, y1, x1, y2);
+            if (!cell.IsLinked(cell.East)) graphics.DrawLine(pen, x2, y1, x2, y2);
+            if (!cell.IsLinked(cell.South)) graphics.DrawLine(pen, x1, y2, x2, y2);
+        }
+        return bitmap;
     }
 }

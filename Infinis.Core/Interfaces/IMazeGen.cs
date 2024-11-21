@@ -2,7 +2,7 @@
 
 namespace Infinis.Interfaces;
 
-public interface IMazeAlgorithm
+public interface IMazeGen
 {
     public Grid Traverse(Grid grid);
 }

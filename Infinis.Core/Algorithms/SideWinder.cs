@@ -3,7 +3,7 @@ using Infinis.Scaffolding;
 
 namespace Infinis.Algorithms;
 
-public class SideWinder : IMazeAlgorithm
+public class SideWinder : IMazeGen
 {
     public Grid Traverse(Grid grid)
     {
