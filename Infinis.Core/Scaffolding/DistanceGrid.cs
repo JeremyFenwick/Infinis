@@ -1,10 +1,12 @@
-﻿namespace Infinis.Scaffolding;
+﻿using Infinis.Algorithms;
+
+namespace Infinis.Scaffolding;
 
 public class DistanceGrid : Grid
 {
     public Distances? Distances { get; set; }
     
-    public DistanceGrid(int rows, int columns) : base(rows, columns)
+    public DistanceGrid(int rows, int columns, MazeGenAlgorithms algo) : base(rows, columns, algo)
     {
     }
 

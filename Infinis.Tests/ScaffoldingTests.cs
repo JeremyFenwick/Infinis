@@ -14,7 +14,7 @@ public class Tests
 
     private Grid MakeGrid()
     {
-        return new Grid(4, 4);
+        return new Grid(4, 4, MazeGenAlgorithms.DoNothing);
     }
 
     [Test]
@@ -142,8 +142,7 @@ public class Tests
     [Test]
     public void DistanceGrid()
     {
-        var grid = new DistanceGrid(20, 20);
-        MazeGen.BinaryTree(grid);
+        var grid = new DistanceGrid(20, 20, MazeGenAlgorithms.BinaryTree);
         var start = grid[0, 0];
         var distances = start.Distances();
         grid.Distances = distances;
@@ -154,8 +153,7 @@ public class Tests
     [Test]
     public void SolutionGrid()
     {
-        var grid = new DistanceGrid(16, 16);
-        MazeGen.SideWinder(grid);
+        var grid = new DistanceGrid(16, 16, MazeGenAlgorithms.SideWinder);
         var start = grid[15, 0];
         var distances = start.Distances();
         grid.Distances = distances;
@@ -165,14 +163,31 @@ public class Tests
     }
     
     [Test]
-    public void ColourSolutionGrid()
+    public void GreenSolutionGrid()
     {
-        var grid = new ColourGrid(16, 16);
-        MazeGen.SideWinder(grid);
-        var start = grid[15, 0];
-        var distances = start.Distances();
-        grid.SetDistances(distances);
-        grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\colourmaze.png", Color.Bisque, Color.DarkSlateGray, 2f, ImageFormat.Png);
+        var grid = new ColourGrid(16, 16, MazeGenAlgorithms.SideWinder);
+        grid.CellColour = CellColour.Green;
+        grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\GreenMaze.png", Color.WhiteSmoke, Color.Black, 2f, ImageFormat.Png);
+        Console.WriteLine(grid);
+        Assert.That(true);
+    }
+    
+    [Test]
+    public void RedSolutionGrid()
+    {
+        var grid = new ColourGrid(16, 16, MazeGenAlgorithms.SideWinder);
+        grid.CellColour = CellColour.Red;
+        grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\RedMaze.png", Color.WhiteSmoke, Color.Black, 2f, ImageFormat.Png);
+        Console.WriteLine(grid);
+        Assert.That(true);
+    }
+    
+    [Test]
+    public void BlueSolutionGrid()
+    {
+        var grid = new ColourGrid(16, 16, MazeGenAlgorithms.BinaryTree);
+        grid.CellColour = CellColour.Blue;
+        grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\BlueMaze.png", Color.WhiteSmoke, Color.Black, 2f, ImageFormat.Png);
         Console.WriteLine(grid);
         Assert.That(true);
     }

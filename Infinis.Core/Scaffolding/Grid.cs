@@ -2,18 +2,22 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
+using Infinis.Algorithms;
 
 namespace Infinis.Scaffolding;
 
 public class Grid : IEnumerable<Cell>, IFormattable
 {
     private Cell[,] Cells { get; }
+    public MazeGenAlgorithms Algorithm { get; }
 
-    public Grid(int rows, int columns)
+    public Grid(int rows, int columns, MazeGenAlgorithms algo)
     {
         Cells = new Cell[rows, columns];
         GenerateCells();
         ConfigureCells();
+        Algorithm = algo;
+        GenerateMaze();
     }
 
     private Grid(Cell[,] cells)
@@ -31,7 +35,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
             }
         }
     }
-
+    
     private void ConfigureCells()
     {
         for (int row = 0; row < Cells.GetLength(0); row++)
@@ -47,6 +51,22 @@ public class Grid : IEnumerable<Cell>, IFormattable
         }
     }
 
+    private void GenerateMaze()
+    {
+        if (Algorithm == MazeGenAlgorithms.BinaryTree)
+        {
+            MazeGen.BinaryTree(this);
+        }
+        else if (Algorithm == MazeGenAlgorithms.SideWinder)
+        {
+            MazeGen.SideWinder(this);
+        }
+        else
+        {
+            return;
+        }
+    }
+    
     private bool ValidLocation(int row, int col)
     {
         return row >= 0 && row < Cells.GetLength(0) && col >= 0 && col < Cells.GetLength(1);
@@ -144,11 +164,6 @@ public class Grid : IEnumerable<Cell>, IFormattable
         return sb.ToString();
     }
 
-    public virtual Color? CellColor(Cell cell)
-    {
-        return null;
-    }
-
     public virtual string CellContents(Cell cell)
     {
         return cell.ToString();
@@ -159,7 +174,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
         return ToString();
     }
 
-    protected Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth, bool cellColours = false)
+    protected virtual Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth)
     {
         var width = cellSize * Cols();
         var height = cellSize * Rows();
@@ -171,24 +186,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
         using var graphics = Graphics.FromImage(bitmap);
         graphics.FillRectangle(brush, 0, 0, width + (cellSize), height + (cellSize));
 
-        // Draw the cell colours if required
-        if (cellColours)
-        {
-            foreach (var cell in this)
-            {
-                var (row, col) = cell.Location();
-                var x1 = col * cellSize + (cellSize / 2);
-                var y1 = row * cellSize + (cellSize / 2);
-                var colour = CellColor(cell);
-                if (colour != null)
-                {
-                    var cellBrush = new SolidBrush((Color)colour);
-                    graphics.FillRectangle(cellBrush, x1, y1, cellSize, cellSize);
-                }
-            } 
-        }
-
-        // Draw the walls (over the cell colours if they are there)
+        // Draw the walls 
         foreach (var cell in this)
         {
             var (row, col) = cell.Location();
