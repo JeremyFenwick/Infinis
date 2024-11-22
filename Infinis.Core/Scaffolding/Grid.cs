@@ -144,6 +144,11 @@ public class Grid : IEnumerable<Cell>, IFormattable
         return sb.ToString();
     }
 
+    public virtual Color? CellColor(Cell cell)
+    {
+        return null;
+    }
+
     public virtual string CellContents(Cell cell)
     {
         return cell.ToString();
@@ -154,7 +159,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
         return ToString();
     }
 
-    private Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth)
+    protected Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth, bool cellColours = false)
     {
         var width = cellSize * Cols();
         var height = cellSize * Rows();
@@ -165,6 +170,25 @@ public class Grid : IEnumerable<Cell>, IFormattable
         var bitmap = new Bitmap(width + (cellSize), height + (cellSize));
         using var graphics = Graphics.FromImage(bitmap);
         graphics.FillRectangle(brush, 0, 0, width + (cellSize), height + (cellSize));
+
+        // Draw the cell colours if required
+        if (cellColours)
+        {
+            foreach (var cell in this)
+            {
+                var (row, col) = cell.Location();
+                var x1 = col * cellSize + (cellSize / 2);
+                var y1 = row * cellSize + (cellSize / 2);
+                var colour = CellColor(cell);
+                if (colour != null)
+                {
+                    var cellBrush = new SolidBrush((Color)colour);
+                    graphics.FillRectangle(cellBrush, x1, y1, cellSize, cellSize);
+                }
+            } 
+        }
+
+        // Draw the walls (over the cell colours if they are there)
         foreach (var cell in this)
         {
             var (row, col) = cell.Location();
@@ -180,7 +204,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
         return bitmap;
     }
     
-    public void CreateImage(int cellSize, string directory, Color background, Color walls, float wallWidth = 1f, ImageFormat? format = null)
+    public virtual void CreateImage(int cellSize, string directory, Color background, Color walls, float wallWidth = 1f, ImageFormat? format = null)
     {
         format ??= ImageFormat.Jpeg;
         var bitMap = this.ToBitmap(cellSize, background, walls, wallWidth);

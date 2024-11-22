@@ -127,14 +127,53 @@ public class Tests
         Assert.That(true);
     }
 
+    // Visual test. Sample Output (random generation)
+    // +---+---+---+---+---+
+    // | 0   1   2   3   4 |
+    // +---+---+---+---+   +
+    // | 9   8   7   6   5 |
+    // +---+---+---+   +   +
+    // |10   9   8   7 | 6 |
+    // +   +---+   +---+   +
+    // |11 |10   9 | 8   7 |
+    // +   +   +   +   +   +
+    // |12 |11 |10 | 9 | 8 |
+    // +---+---+---+---+---+
     [Test]
     public void DistanceGrid()
     {
-        var grid = new DistanceGrid(5, 5);
+        var grid = new DistanceGrid(20, 20);
         MazeGen.BinaryTree(grid);
         var start = grid[0, 0];
         var distances = start.Distances();
         grid.Distances = distances;
         Console.WriteLine(grid);
+        Assert.That(true);
+    }
+    
+    [Test]
+    public void SolutionGrid()
+    {
+        var grid = new DistanceGrid(16, 16);
+        MazeGen.SideWinder(grid);
+        var start = grid[15, 0];
+        var distances = start.Distances();
+        grid.Distances = distances;
+        grid.Distances = grid.Distances.PathTo(grid[0, 15]);
+        Console.WriteLine(grid);
+        Assert.That(true);
+    }
+    
+    [Test]
+    public void ColourSolutionGrid()
+    {
+        var grid = new ColourGrid(16, 16);
+        MazeGen.SideWinder(grid);
+        var start = grid[15, 0];
+        var distances = start.Distances();
+        grid.SetDistances(distances);
+        grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\colourmaze.png", Color.Bisque, Color.DarkSlateGray, 2f, ImageFormat.Png);
+        Console.WriteLine(grid);
+        Assert.That(true);
     }
 }
