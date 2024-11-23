@@ -9,7 +9,7 @@ namespace Infinis.Scaffolding;
 public class Maze : IEnumerable<Cell>, IFormattable
 {
     private Cell[,] Cells { get; }
-    public MazeGenAlgorithms Algorithm { get; }
+    private MazeGenAlgorithms Algorithm { get; }
 
     public Maze(int rows, int columns, MazeGenAlgorithms algo)
     {
@@ -53,17 +53,24 @@ public class Maze : IEnumerable<Cell>, IFormattable
 
     private void GenerateMaze()
     {
-        if (Algorithm == MazeGenAlgorithms.BinaryTree)
+        switch (Algorithm)
         {
-            MazeGen.BinaryTree(this);
-        }
-        else if (Algorithm == MazeGenAlgorithms.SideWinder)
-        {
-            MazeGen.SideWinder(this);
-        }
-        else
-        {
-            return;
+            case MazeGenAlgorithms.BinaryTree:
+                MazeGen.BinaryTree(this);
+                break;
+            case MazeGenAlgorithms.SideWinder:
+                MazeGen.SideWinder(this);
+                break;
+            case MazeGenAlgorithms.AldousBroder:
+                MazeGen.AldousBroder(this);
+                break;
+            case MazeGenAlgorithms.Wilson:
+                MazeGen.Wilson(this);
+                break;
+            case MazeGenAlgorithms.DoNothing:
+                break;
+            default:
+                return;
         }
     }
     
@@ -207,5 +214,13 @@ public class Maze : IEnumerable<Cell>, IFormattable
         format ??= ImageFormat.Jpeg;
         var bitMap = this.ToBitmap(cellSize, background, walls, wallWidth);
         bitMap.Save(directory, format);
+    }
+
+    public Cell GetRandomCell()
+    {
+        var rnd = new Random();
+        var rndRow = rnd.Next(0, Rows());
+        var rndCol = rnd.Next(0, Cols());
+        return Cells[rndRow, rndCol];
     }
 }

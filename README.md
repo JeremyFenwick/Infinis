@@ -10,7 +10,7 @@ A maze generator and solver. Use to experiment with a wide range of algorithms.
 
 - Apollo.Tests > _Contains all the unit tests for Infinis_
 
-### Colour Mazes:
+### Colour Mazes
 Each of the below shows the distance of each cell from the bottom left corner. Darker means further away.
 
 ![Green Maze](./Outputs/ColourMazes/GreenMaze.png)
@@ -19,7 +19,7 @@ Each of the below shows the distance of each cell from the bottom left corner. D
 
 ### Maze Solutions
 
-Based on Dijkstra's Algorithm
+Based on Dijkstra's Algorithm.
 
 ![Red Maze](./Outputs/ColourMazes/SolvedMaze.png)
 

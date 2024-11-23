@@ -57,4 +57,56 @@ public static class MazeGen
             }
         }
     }
+
+    public static void AldousBroder(Maze maze)
+    {
+        var cell = maze.GetRandomCell();
+        var unvisited = maze.Size() - 1;
+
+        while (unvisited > 0)
+        {
+            var neighbours = cell.Neighbours();
+            var neighbour = Cell.Sample(neighbours);
+
+            if (!neighbour.GetLinks().Any())
+            {
+                cell.Link(neighbour);
+                unvisited--;
+            }
+            cell = neighbour;
+        }
+    }
+
+    public static void Wilson(Maze maze)
+    {
+        var unvisited = maze.ToList();
+        var first = Cell.Sample(unvisited);
+        unvisited.Remove(first);
+
+        while (unvisited.Count > 0)
+        {
+            var cell = Cell.Sample(unvisited);
+            var path = new List<Cell>();
+            path.Add(cell);
+
+            while (unvisited.Contains(cell))
+            {
+                var neighbours = cell.Neighbours();
+                cell = Cell.Sample(neighbours);
+                var position = path.IndexOf(cell);
+                
+                if (position >= 0) path = path[..(position + 1)];
+                else path.Add(cell);
+            }
+
+            for (int i = 0; i < path.Count; i++)
+            {
+                if (i < path.Count - 1)
+                {
+                    path[i].Link(path[i + 1]);
+                    unvisited.Remove(path[i]);
+                }
+            }
+        }
+    }
 }

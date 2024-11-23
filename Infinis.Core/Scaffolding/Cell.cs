@@ -80,4 +80,28 @@ public class Cell : IFormattable
         }
         return distances;
     }
+
+    public IList<Cell> Neighbours()
+    {
+        var neighbours = new List<Cell>();
+        if (North != null) neighbours.Add(North);
+        if (East != null) neighbours.Add(East);
+        if (South != null) neighbours.Add(South);
+        if (West != null) neighbours.Add(West);
+        return neighbours;
+    }
+
+    public static Cell Sample(IList<Cell> cells)
+    {
+        var rnd = new Random();
+        var rndIndex = rnd.Next(0, cells.Count);
+        return cells[rndIndex];
+    }
+}
+
+public enum CellColour
+{
+    Red,
+    Green,
+    Blue
 }
