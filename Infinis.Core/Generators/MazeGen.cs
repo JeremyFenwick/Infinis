@@ -4,10 +4,10 @@ namespace Infinis.Algorithms;
 
 public static class MazeGen
 {
-    public static void BinaryTree(Grid grid)
+    public static void BinaryTree(Maze maze)
     {
         var rnd = new Random();
-        foreach (var cell in grid)
+        foreach (var cell in maze)
         {
             Cell? neighbour = null;
             var neighbours = new List<Cell?>();
@@ -24,11 +24,11 @@ public static class MazeGen
         }
     }
 
-    public static void SideWinder(Grid grid)
+    public static void SideWinder(Maze maze)
     {
-        for (int row = 0; row < grid.Rows(); row++)
+        for (int row = 0; row < maze.Rows(); row++)
         {
-            var rowData = grid.GetRow(row);
+            var rowData = maze.GetRow(row);
             SideWinderHelper(rowData);
         }
     }

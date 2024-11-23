@@ -4,14 +4,14 @@ using Infinis.Algorithms;
 
 namespace Infinis.Scaffolding;
 
-public class ColourGrid : Grid
+public class ColourMaze : Maze
 {
     public Distances Distances { get; private set; }
     public Cell Farthest { get; private set; }
     public int MaxDistance { get; private set; }
     public CellColour CellColour { get; set; }
     
-    public ColourGrid(int rows, int columns, MazeGenAlgorithms algo) : base(rows, columns, algo)
+    public ColourMaze(int rows, int columns, MazeGenAlgorithms algo) : base(rows, columns, algo)
     {
         // By default, distances is in the bottom left
         Distances = this[Rows() - 1, 0]!.Distances();
@@ -19,7 +19,7 @@ public class ColourGrid : Grid
         SetDistances(Distances);
     }
 
-    public void SetDistances(Distances distances)
+    private void SetDistances(Distances distances)
     {
         Distances = distances;
         var max = Distances.FarthestCell();

@@ -2,12 +2,18 @@
 
 namespace Infinis.Scaffolding;
 
-public class DistanceGrid : Grid
+public class DistanceMaze : Maze
 {
-    public Distances? Distances { get; set; }
+    public Distances Distances { get; set; }
     
-    public DistanceGrid(int rows, int columns, MazeGenAlgorithms algo) : base(rows, columns, algo)
+    public DistanceMaze(int rows, int columns, MazeGenAlgorithms algo) : base(rows, columns, algo)
     {
+        Distances = this[Rows() - 1, 0]!.Distances();
+    }
+
+    public void DistanceTo(int row, int column)
+    {
+        Distances = Distances.PathTo(this[row, column]);
     }
 
     public override string CellContents(Cell cell)

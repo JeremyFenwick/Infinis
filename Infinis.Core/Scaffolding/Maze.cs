@@ -6,12 +6,12 @@ using Infinis.Algorithms;
 
 namespace Infinis.Scaffolding;
 
-public class Grid : IEnumerable<Cell>, IFormattable
+public class Maze : IEnumerable<Cell>, IFormattable
 {
     private Cell[,] Cells { get; }
     public MazeGenAlgorithms Algorithm { get; }
 
-    public Grid(int rows, int columns, MazeGenAlgorithms algo)
+    public Maze(int rows, int columns, MazeGenAlgorithms algo)
     {
         Cells = new Cell[rows, columns];
         GenerateCells();
@@ -20,7 +20,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
         GenerateMaze();
     }
 
-    private Grid(Cell[,] cells)
+    private Maze(Cell[,] cells)
     {
         Cells = cells;
     }
@@ -119,7 +119,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
     /// <summary>
     /// Performs a deep copy of the grid.
     /// </summary>
-    public Grid Clone()
+    public Maze Clone()
     {
         var newCells = new Cell[Rows(), Cols()];
         for (int row = 0; row < Cells.GetLength(0); row++)
@@ -129,7 +129,7 @@ public class Grid : IEnumerable<Cell>, IFormattable
                 newCells[row, col] = Cells[row, col];
             }
         }
-        return new Grid(newCells);
+        return new Maze(newCells);
     }
 
     public override string ToString()

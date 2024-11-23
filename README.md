@@ -17,6 +17,11 @@ Each of the below shows the distance of each cell from the bottom left corner. D
 ![Blue Maze](./Outputs/ColourMazes/RedMaze.png)
 ![Red Maze](./Outputs/ColourMazes/BlueMaze.png)
 
+### Maze Solutions
+
+Based on Dijkstra's Algorithm
+
+![Red Maze](./Outputs/ColourMazes/SolvedMaze.png)
 
 
 
