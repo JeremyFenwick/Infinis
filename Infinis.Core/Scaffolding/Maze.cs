@@ -67,6 +67,9 @@ public class Maze : IEnumerable<Cell>, IFormattable
             case MazeGenAlgorithms.Wilson:
                 MazeGen.Wilson(this);
                 break;
+            case MazeGenAlgorithms.HuntAndKill:
+                MazeGen.HuntAndKill(this);
+                break;
             case MazeGenAlgorithms.DoNothing:
                 break;
             default:
@@ -222,5 +225,10 @@ public class Maze : IEnumerable<Cell>, IFormattable
         var rndRow = rnd.Next(0, Rows());
         var rndCol = rnd.Next(0, Cols());
         return Cells[rndRow, rndCol];
+    }
+
+    public IList DeadEnds()
+    {
+        return this.Where(cell => cell.GetLinks().Count == 1).ToList();
     }
 }

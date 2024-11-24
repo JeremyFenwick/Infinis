@@ -6,5 +6,6 @@ public enum MazeGenAlgorithms
     BinaryTree,
     AldousBroder,
     Wilson,
+    HuntAndKill,
     DoNothing
 }

@@ -109,4 +109,35 @@ public static class MazeGen
             }
         }
     }
+
+    public static void HuntAndKill(Maze maze)
+    {
+        var current = maze.GetRandomCell();
+
+        while (current != null)
+        {
+            var unvisitedNeighbours = current.Neighbours().Where(item => item.GetLinks().Count == 0).ToList();
+            if (unvisitedNeighbours.Count > 0)
+            {
+                var neighbour = Cell.Sample(unvisitedNeighbours);
+                current.Link(neighbour);
+                current = neighbour;
+            }
+            else
+            {
+                current = null;
+                foreach (var cell in maze)
+                {
+                    var visitedNeighbours = cell.Neighbours().Where(item => item.GetLinks().Count > 0).ToList();
+                    if (cell.GetLinks().Count == 0 && visitedNeighbours.Count > 0)
+                    {
+                        current = cell;
+                        var neighbour = Cell.Sample(visitedNeighbours);
+                        current.Link(neighbour);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

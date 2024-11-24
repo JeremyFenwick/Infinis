@@ -38,9 +38,9 @@ public class Cell : IFormattable
         }
     }
 
-    public IEnumerable<Cell> GetLinks()
+    public IList<Cell> GetLinks()
     {
-        return this._links;
+        return this._links.ToList();
     }
 
     public bool IsLinked(Cell? cell)
@@ -103,5 +103,6 @@ public enum CellColour
 {
     Red,
     Green,
-    Blue
+    Blue,
+    Purple
 }

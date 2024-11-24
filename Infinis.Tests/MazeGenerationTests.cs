@@ -85,4 +85,13 @@ public class MazeGenerationTests
         grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\Wilson.png", Color.WhiteSmoke, Color.Black, 2f, ImageFormat.Png);
         Assert.That(true);
     }
+    
+    [Test]
+    public void HuntAndKill()
+    {
+        var grid = new ColourMaze(16, 16, MazeGenAlgorithms.Wilson);
+        grid.CellColour = CellColour.Purple;
+        grid.CreateImage(40, "C:\\Users\\jerem\\Documents\\HuntAndKill.png", Color.WhiteSmoke, Color.Black, 2f, ImageFormat.Png);
+        Assert.That(true);
+    }
 }

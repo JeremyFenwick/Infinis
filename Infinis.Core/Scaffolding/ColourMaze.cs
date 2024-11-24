@@ -32,17 +32,14 @@ public class ColourMaze : Maze
         var intensity = (MaxDistance - Distances![cell]) / (float)MaxDistance;
         var dark = (int)(255 * intensity);
         var bright = (int)(128 + (127 * intensity));
-        switch (CellColour)
+        return CellColour switch
         {
-            case CellColour.Red:
-                return Color.FromArgb(bright, dark, dark);
-            case CellColour.Green:
-                return Color.FromArgb(dark, bright, dark);
-            case CellColour.Blue:
-                return Color.FromArgb(dark, dark, bright);
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            CellColour.Red => Color.FromArgb(bright, dark, dark),
+            CellColour.Green => Color.FromArgb(dark, bright, dark),
+            CellColour.Blue => Color.FromArgb(dark, dark, bright),
+            CellColour.Purple => Color.FromArgb(bright, dark, bright),
+            _ => throw new ArgumentOutOfRangeException()
+        };
     } 
     
     protected override Bitmap ToBitmap(int cellSize, Color background, Color walls, float wallWidth)
